@@ -1,7 +1,8 @@
+/*
+#pragma once
 #include <iostream>
 #include "Role.h"
 #include <vector>
-#pragma once
 
 class User
 {
@@ -13,6 +14,6 @@ public:
 
 	User();
 };
-
+*/
 
 

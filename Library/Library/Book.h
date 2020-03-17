@@ -1,5 +1,6 @@
-#include <iostream>
 #pragma once
+#include <iostream>
+
 class Book
 {
 public:
@@ -9,6 +10,6 @@ public:
 	bool CheckedOut;
 	std::string LastCheckedOutDate;
 
-	Book(std::string title, std::string author);
+	Book(std::string title, std::string author); //constructor
 };
 
