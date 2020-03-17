@@ -1,2 +1,8 @@
-﻿  Library.cpp
+﻿  Book.cpp
+  Inventory.cpp
+  Library.cpp
+C:\Users\User\source\repos\ntilbe\Library\Library\Library\Library.cpp(29,52): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Role.cpp
+  User.cpp
+  Generating Code...
   Library.vcxproj -> C:\Users\User\source\repos\ntilbe\Library\Library\x64\Debug\Library.exe

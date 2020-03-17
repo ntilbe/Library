@@ -10,6 +10,15 @@ public:
 	bool CheckedOut;
 	std::string LastCheckedOutDate;
 
-	Book(std::string title, std::string author); //constructor
+	Book(int id, std::string title, std::string author); //constructor
+
+	bool operator==(const Book&book) const
+	{
+		if (Title.compare(book.Title) == 0)
+			return true;
+		else
+			return false;
+	}
+
 };
 
