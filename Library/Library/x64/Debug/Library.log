@@ -1,8 +1,5 @@
-﻿  Book.cpp
-  Inventory.cpp
-  Library.cpp
-C:\Users\User\source\repos\ntilbe\Library\Library\Library\Library.cpp(29,52): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  Role.cpp
-  User.cpp
-  Generating Code...
+﻿  Library.cpp
+C:\Users\User\source\repos\ntilbe\Library\Library\Library\Library.cpp(42,52): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\source\repos\ntilbe\Library\Library\Library\Library.cpp(107,50): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\source\repos\ntilbe\Library\Library\Library\Library.cpp(125,16): warning C4102: 'Default': unreferenced label
   Library.vcxproj -> C:\Users\User\source\repos\ntilbe\Library\Library\x64\Debug\Library.exe
