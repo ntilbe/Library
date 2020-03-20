@@ -1,5 +1,8 @@
-﻿  Library.cpp
+﻿  Inventory.cpp
+C:\Users\User\source\repos\ntilbe\Library\Library\Library\Inventory.cpp(13,12): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
+  Library.cpp
 C:\Users\User\source\repos\ntilbe\Library\Library\Library\Library.cpp(42,52): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\User\source\repos\ntilbe\Library\Library\Library\Library.cpp(107,50): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\User\source\repos\ntilbe\Library\Library\Library\Library.cpp(125,16): warning C4102: 'Default': unreferenced label
+C:\Users\User\source\repos\ntilbe\Library\Library\Library\Library.cpp(113,50): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\source\repos\ntilbe\Library\Library\Library\Library.cpp(131,16): warning C4102: 'Default': unreferenced label
+  Generating Code...
   Library.vcxproj -> C:\Users\User\source\repos\ntilbe\Library\Library\x64\Debug\Library.exe

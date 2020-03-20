@@ -29,7 +29,7 @@ int main()
 
         switch (choice)
         {
-        case 1:
+        case 1: 
         {
             std::cout << "Enter Book Title:\n";
             std::string bookTitle;
@@ -63,15 +63,17 @@ int main()
             std::cout << "Enter a Book Title to Check Out: ";
             std::string bookTitle;
             std::getline(std::cin, bookTitle);
-            Book foundBook;
-            if (inventory.FindBookByTitle(bookTitle, foundBook))
+           
+            int index = (inventory.FindBookByTitle(bookTitle));
+
+            if (index >= 0)
             {
-                if (foundBook.CheckedOut) 
+                if (inventory.Books[index].CheckedOut)
                 {
                     std::cout << "Book already Checked Out." << std::endl;
                     break;
                 }
-                inventory.CheckOutBook(foundBook);
+                inventory.Books[index].CheckedOut = true;
                 std::cout << "\nYou have checked out a new book.\n";
             }
             else
@@ -85,15 +87,19 @@ int main()
             std::cout << "Enter a Book Title to Check In: ";
             std::string bookTitle;
             std::getline(std::cin, bookTitle);
-            Book foundBook;
-            if (inventory.FindBookByTitle(bookTitle, foundBook)) 
+         
+            int index = inventory.FindBookByTitle(bookTitle);
+
+            if (index >= 0) 
             {
+                Book foundBook = inventory.Books[index];
+
                 if (!foundBook.CheckedOut)
                 {
                     std::cout << "Book already checked in." << std::endl;
                     break;
                 }
-                inventory.CheckInBook(foundBook);
+                inventory.Books[index].CheckedOut = false;
                 std::cout << "\nYou have checked in a book.\n";
             }
             else
