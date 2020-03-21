@@ -3,7 +3,6 @@
 #include <string>
 #include "inventory.h"
 
-
 Inventory inventory; //class and object
 
 void AddBook() // Case 1
@@ -99,6 +98,11 @@ void DisplayNumBooks() // Case 5
     }
 }
 
+void RemoveBook() // Case 6
+{
+
+
+}
 
 int main()
 {
@@ -114,7 +118,8 @@ int main()
         std::cout << "3. Check out a book\n";
         std::cout << "4. Check in a book\n";
         std::cout << "5. Display number of books in the library\n";
-        std::cout << "6. Exit the library\n"; 
+        std::cout << "6. Remove a book from the inventory";
+        std::cout << "7. Exit the library\n"; 
 
 
         std::cin >> choice; // User enters 1-6; otherwise comes back invalid
@@ -149,6 +154,11 @@ int main()
         }
         case 6:
         {
+            void RemoveBook();
+            break;
+        }
+        case 7:
+        {
             std::cout << "Thank you. Goodbye.\n";
             break;
         }
@@ -156,7 +166,7 @@ int main()
         Default:
             std::cout << "Invalid Selection. Please try again." << std::endl;
         }
-    } while (choice != 6); //this will loop until you select #6 to exit the library
+    } while (choice != 7); //this will loop until you select #6 to exit the library
 
     return 0;
 }
