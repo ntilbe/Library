@@ -1,5 +1,9 @@
 #pragma once
-class Role
+#include <iostream>
+enum class Role
 {
+	Member,
+	Employee,
+	Admin
 };
 

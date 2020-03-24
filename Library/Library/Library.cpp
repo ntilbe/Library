@@ -2,22 +2,99 @@
 #include "Book.h"
 #include <string>
 #include "inventory.h"
+#include "User.h"
 
 Inventory inventory; //class and object
+std::vector<User> _users;
+User _loggedInUser;
+
+void CreateAccount()
+{
+    User newUser;
+
+    //std::cout << "First Name: " << std::endl;
+    //std::string firstName;
+    //getline(std::cin, firstName);
+
+    //std::cout << "Last Name: " << std::endl;
+    //std::string lastName;
+    //getline(std::cin, lastName);
+
+    std::cout << "Username: " << std::endl;
+    getline(std::cin, newUser.Username);
+
+    std::cout << "Choose a role: " << std::endl;
+    std::cout << "1. Admin " << std::endl;
+    std::cout << "2. Employee " << std::endl;
+    std::cout << "3. Member " << std::endl;
+
+    int roleOption;
+    std::cin >> roleOption;
+    std::cin.ignore();
+
+    if (roleOption == 1)
+        newUser.Role = Role::Admin;
+    else if (roleOption == 2)
+        newUser.Role = Role::Employee;
+    else
+        newUser.Role = Role::Member;
+
+    _users.push_back(newUser);
+}
+
+void Login()
+{
+    std::cout << "Choose an option: " << std::endl;
+    std::cout << "1. Log In " << std::endl;
+    std::cout << "2. Create an account " << std::endl;
+
+    int option;
+    std::cin >> option;
+    std::cin.ignore();
+
+    if (option == 2)
+    {
+        CreateAccount();
+    }
+
+
+    std::cout << "Enter username: ";
+    std::string username;
+    getline( std::cin, username);
+
+
+    User user;
+    user.Username = username;
+
+    std::vector<User>::iterator it = find(_users.begin(), _users.end(), user);
+
+    if (it != _users.end())
+    {
+        _loggedInUser = _users[it - _users.begin()];
+    }
+
+}
 
 void DisplayMainMenu()
 {
     std::cout << " [  M A I N    M E N U  ] \n";
     std::cout << "\n";
     std::cout << "\n";
-    std::cout << "1. Add a book to the library\n";
-    std::cout << "2. Display list of books from inventory\n";
-    std::cout << "3. Check out a book\n";
-    std::cout << "4. Check in a book\n";
-    std::cout << "5. Display number of books in the library\n";
-    std::cout << "6. Remove a book from the inventory";
-    std::cout << "7. List all checked out books\n";
-    std::cout << "8. Exit the library\n";
+    std::cout << "Choose an option: " << std::endl;
+
+    if (_loggedInUser.Role == Role::Employee || _loggedInUser.Role == Role::Admin)
+    {
+        std::cout << "1. Add a book to the library\n";
+        std::cout << "2. Display number of books in the library\n";
+        std::cout << "3. Remove a book from the inventory";
+        std::cout << "4. List all checked out books\n";
+    }
+
+    std::cout << "5. List all books\n";
+    std::cout << "6. Check out a book\n";
+    std::cout << "7. Check in a book\n";
+
+    std::cout << "0. Exit the library\n";
 }
 
 void AddNewBook() // Case 1
@@ -64,11 +141,15 @@ void CheckInOrOutBook(bool checkOut) // Case 3 & 4
 
     if (result == CheckInOrOutResult::BookNotFound)
     {
-        std::cout << "Book not found";
+        std::cout << "Book not found" << std::endl;
     }
     else if(result == CheckInOrOutResult::Success)
     {
         std::cout << "Book checked " + inOrOut + "!" << std::endl;
+    }
+    else if (result == CheckInOrOutResult::AlreadyCheckedIn || result == CheckInOrOutResult::AlreadyCheckedOut)
+    {
+        std::cout << "Book already checked " + inOrOut + "!" << std::endl;
     }
     else
     {
@@ -110,6 +191,7 @@ void DisplayCheckedOutBooks()
 
 int main()
 {
+    Login();
     int choice;
     do
     {
@@ -120,6 +202,9 @@ int main()
 
         switch (choice)
         {
+        case 0:
+            std::cout << "Thank you. Goodbye.\n";
+            break;
         case 1: 
             AddNewBook();
             break;
@@ -127,10 +212,10 @@ int main()
             ListAllBooks();
             break;
         case 3:
-            CheckInOrOutBook(false);
+            CheckInOrOutBook(true);
             break;
         case 4:
-            CheckInOrOutBook(true);
+            CheckInOrOutBook(false);
             break;
         case 5:
             DisplayNumBooks();
@@ -141,15 +226,12 @@ int main()
         case 7:
             void DisplayCheckedOutBooks();
             break;
-        case 8:
-            std::cout << "Thank you. Goodbye.\n";
-            break;
 
         default:
             std::cout << std::endl;
             std::cout << "Invalid Selection. Please try again." << std::endl;
         }
-    } while (choice != 8); //this will loop until you select #6 to exit the library
+    } while (choice != 0); //this will loop until you select #6 to exit the library
 
     return 0;
 }
