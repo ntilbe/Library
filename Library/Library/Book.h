@@ -3,15 +3,22 @@
 
 class Book
 {
-public:
+
+private:
 	int Id;
 	std::string Title;
 	std::string Author;
 	bool CheckedOut;
-	std::string LastCheckedOutDate;
+
+public:
 
 	Book();
-	Book(int id, std::string title, std::string author); //constructor
+	Book(std::string title, std::string author); //constructor
+
+	void SetBookId(int id);
+	void CheckInOrOut(bool checkout);
+	void DisplayBook();
+	bool IsCheckedOut();
 
 	bool operator==(const Book &book) const
 	{
