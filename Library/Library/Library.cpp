@@ -3,10 +3,73 @@
 #include <string>
 #include "inventory.h"
 #include "User.h"
+#include <fstream>
 
 Inventory inventory; //class and object
 std::vector<User> _users;
 User _loggedInUser;
+
+Role GetRoleFromIntVal(int roleVal)
+{
+    Role outRole;
+    if (roleVal == 0)
+    {
+        outRole = Role::Admin;
+    }
+    else if (roleVal == 1)
+    {
+        outRole = Role::Employee;
+    }
+    else 
+    {
+        outRole = Role::Member;
+    }
+ 
+
+    return outRole;
+}
+
+void LoadUsers()
+{
+    std::ifstream inFile("users.txt");
+
+    std::string lineData[2];
+    // lineData[0] = username
+    // lineData[1] = role int val
+
+    std::string userLine;
+    while (getline(inFile, userLine))
+    {
+        size_t index = userLine.find(' | ');
+        lineData[0] = userLine.substr(0, index);
+        lineData[1] = userLine.substr(index + 1);
+
+        User loadedUser;
+        loadedUser.Username = lineData[0];
+        loadedUser.Role = GetRoleFromIntVal(stoi(lineData[1]));
+
+        _users.push_back(loadedUser);
+    }
+}
+
+int GetIntValFromRole(Role role)
+{
+    int roleVal = -1;
+    if (role == Role::Admin)
+    {
+        roleVal = 0;
+    }
+    else if (role == Role::Employee)
+    {
+        roleVal = 1;
+    }
+    else if (role == Role::Member)
+    {
+        roleVal = 2;
+    }
+
+    return roleVal;
+}
 
 void CreateAccount()
 {
@@ -40,6 +103,11 @@ void CreateAccount()
         newUser.Role = Role::Member;
 
     _users.push_back(newUser);
+
+    std::ofstream oFile("users.txt", std::ios_base::app);
+    oFile << newUser.Username << "|" << GetIntValFromRole(newUser.Role) << std::endl;
+    oFile.close();
+
 }
 
 void Login()
@@ -57,22 +125,24 @@ void Login()
         CreateAccount();
     }
 
-
-    std::cout << "Enter username: ";
-    std::string username;
-    getline( std::cin, username);
-
-
-    User user;
-    user.Username = username;
-
-    std::vector<User>::iterator it = find(_users.begin(), _users.end(), user);
-
-    if (it != _users.end())
+    while (true)
     {
-        _loggedInUser = _users[it - _users.begin()];
-    }
+        std::cout << "Enter username: ";
+        std::string username;
+        getline(std::cin, username);
 
+
+        User user;
+        user.Username = username;
+
+        std::vector<User>::iterator it = find(_users.begin(), _users.end(), user);
+
+        if (it != _users.end())
+        {
+            _loggedInUser = _users[it - _users.begin()];
+            break;
+        }
+    }
 }
 
 void DisplayMainMenu()
@@ -191,7 +261,11 @@ void DisplayCheckedOutBooks()
 
 int main()
 {
+    LoadUsers();
     Login();
+
+    inventory.LoadBooks();
+
     int choice;
     do
     {
