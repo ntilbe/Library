@@ -20,8 +20,6 @@ void Inventory::AddBook(Book book)
 	if (Books.size() > 0)
 		nextBookId = Books.back().Id + 1;
 
-	//Book lastBook = Books.back(); -> not sure if this was deleted or I put in the wrong place
-
 	book.Id = nextBookId + 1;
 
 	Inventory::Books.push_back(book);
@@ -116,6 +114,13 @@ CheckInOrOutResult Inventory::CheckInOrOutBook(std::string title, bool checkOut)
 	
 
 	Books[foundBookIndex].CheckInOrOut(checkOut);
+
+	std::ofstream oFile("books.txt"); // don't need the ios_base::app (append) because we want to overwrite this whether it is checked in or out
+	for (int i = 0; i < Books.size(); i++) // loop to find book and to see if it is checked in or out
+	{
+		oFile << Books[i].GetBookFileData() << std::endl; //the GetBookFileData seperates the info with pipes ( | ) and will be shown in the txt file with this line
+	}
+
 	return CheckInOrOutResult::Success;
 }
 
