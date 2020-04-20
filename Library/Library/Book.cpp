@@ -17,7 +17,7 @@ void Book::CheckInOrOut(bool checkOut) // setter
 
 void Book::DisplayBook()
 {
-	std::cout << Id << "\t" << Title << "\t" << Author << std::endl; // Displays all books in inventory
+	std::cout << Id << "\t" << Title << "\t" << Author << std::endl; // cout book ID, Title, and Author, seperated by a tab; the actual book
 }
 
 bool Book::IsCheckedOut()

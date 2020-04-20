@@ -6,7 +6,7 @@
 
 int Inventory::NumberOfBooks()
 {
-	return Inventory::Books.size();
+	return Inventory::Books.size(); // returns number of books in current inventory
 }
 
 Book Inventory::GetBookByIndex(int index) // Book* Inventory is the pointer that gives access to the book
@@ -79,34 +79,35 @@ void Inventory::RemoveBook(std::string title)
 
 int Inventory::FindBookByTitle(std::string title)
 {
-	std::vector<Book>::iterator it = std::find(Inventory::Books.begin(), Inventory::Books.end(), Book(title, ""));
+	std::vector<Book>::iterator it = std::find(Inventory::Books.begin(), Inventory::Books.end(), Book(title, "")); // searches vector by book title 
 
-	if (it == Inventory::Books.end())
+	if (it == Inventory::Books.end()) // if it gets to the end of the book vector, returns -1, no title found
 	{
 		return -1;
 	}
 
 	int index = it - Inventory::Books.begin();
-
+	// it = the location of where the book was found within the vector
+	// calculates where it is located in reference from the beginning (ex. 4th book in would be index location = 3)
 	return index;
 }
 
 CheckInOrOutResult Inventory::CheckInOrOutBook(std::string title, bool checkOut)
 {
-	int foundBookIndex = FindBookByTitle(title);
+	int foundBookIndex = FindBookByTitle(title); // FindBookByTitle searches vector by Book title, gives location of index in vector
 
-	if (foundBookIndex < 0)
+	if (foundBookIndex < 0) // if index is less than 0, Book was not found
 	{
 		return CheckInOrOutResult::BookNotFound;
 	}
-	else if (checkOut == Books[foundBookIndex].IsCheckedOut())
+	else if (checkOut == Books[foundBookIndex].IsCheckedOut()) // checkOut will equal true or false && IsCheckedOut will equal true or false, enters if statement if both are true or both are false
 	{
 
-		if (checkOut)
+		if (checkOut) // if checkOut equals true then book is already checked out
 		{
 			return CheckInOrOutResult::AlreadyCheckedOut;
 		}
-		else
+		else // else it is checked in
 		{
 			return CheckInOrOutResult::AlreadyCheckedIn;
 		}
@@ -121,15 +122,15 @@ CheckInOrOutResult Inventory::CheckInOrOutBook(std::string title, bool checkOut)
 		oFile << Books[i].GetBookFileData() << std::endl; //the GetBookFileData seperates the info with pipes ( | ) and will be shown in the txt file with this line
 	}
 
-	return CheckInOrOutResult::Success;
+	return CheckInOrOutResult::Success; 
 }
 
 void Inventory::DisplayAllBooks()
 {
-	std::cout << "\nID\tTitle\tAuthor" << std::endl;
+	std::cout << "\nID\tTitle\tAuthor" << std::endl; // seperates ID, Title, and Author by tab
 	for (int i = 0; i < NumberOfBooks(); i++) // Goes from 0 to the size of the vector (ex. if there are 10 elements in the vector, it will be 10
 	{
-		Books[i].DisplayBook();
+		Books[i].DisplayBook(); // vector of Books, displays books one by one in DisplayBook format (refer to book.cpp)
 	}
 	std::cout << std::endl;
 }

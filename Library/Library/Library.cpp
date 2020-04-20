@@ -6,14 +6,14 @@
 #include <fstream>
 
 Inventory inventory; //class and object
-std::vector<User> _users;
-User _loggedInUser;
-int choice;
+std::vector<User> _users; // vector to store user info (from user.h file)
+User _loggedInUser; // stores the info regarding who's logged  in; uses _ to show its a global variable listed at top of program to use 
+int choice; // for switch statement
 
-Role GetRoleFromIntVal(int roleVal)
+Role GetRoleFromIntVal(int roleVal) // roleVal = a number given to roles (Ex. 0 = Admin), input a number and depending on role will be given different abilities
 {
 	Role outRole;
-	if (roleVal == 0)
+	if (roleVal == 0) // inputs number, outputs role type
 	{
 		outRole = Role::Admin;
 	}
@@ -25,38 +25,37 @@ Role GetRoleFromIntVal(int roleVal)
 	{
 		outRole = Role::Member;
 	}
-
-
 	return outRole;
 }
 
 void LoadUsers()
 {
-	std::ifstream inFile("users.txt");
+	std::ifstream inFile("users.txt"); // opening txt file
 
-	std::string lineData[2];
+	std::string lineData[2]; // 2 lines of data ( lineData[0] and lineData[1] )
 	// lineData[0] = username
-	// lineData[1] = role int val
+	// lineData[1] = role int val (Ex: 0 = Admin)
 
-	std::string userLine;
-	while (getline(inFile, userLine))
+	std::string userLine; // used to get entire line of user info
+	while (getline(inFile, userLine)) // gets and loads user info 
 	{
-		size_t index = userLine.find(' | ');
-		lineData[0] = userLine.substr(0, index);
-		lineData[1] = userLine.substr(index + 1);
+		size_t index = userLine.find('|');
+		lineData[0] = userLine.substr(0, index); // index 0 to | will be saved in lineData[0]
+		lineData[1] = userLine.substr(index + 1); // | to end of line will be saved in lineData[1]
 
-		User loadedUser;
-		loadedUser.Username = lineData[0];
-		loadedUser.Role = GetRoleFromIntVal(stoi(lineData[1]));
 
-		_users.push_back(loadedUser);
+		User loadedUser; //  lineData [0] and [1] saved to loadedUser
+		loadedUser.Username = lineData[0]; // lineData[0] set to Username
+		loadedUser.Role = GetRoleFromIntVal(stoi(lineData[1])); // lineData[1] set to role; convert int to role
+
+		_users.push_back(loadedUser); // push_back pushes loadedUser into the last place in vector
 	}
 }
 
 int GetIntValFromRole(Role role)
 {
-	int roleVal = -1;
-	if (role == Role::Admin)
+	int roleVal = -1; // will come back -1 if roleVal doesn't equal 0, 1, or 2.
+	if (role == Role::Admin) // input role type, output int
 	{
 		roleVal = 0;
 	}
@@ -74,7 +73,7 @@ int GetIntValFromRole(Role role)
 
 void CreateAccount()
 {
-	User newUser;
+	User newUser; // newUser = username, role
 
 	//std::cout << "First Name: " << std::endl;
 	//std::string firstName;
@@ -85,29 +84,24 @@ void CreateAccount()
 	//getline(std::cin, lastName);
 
 	std::cout << "Username: " << std::endl;
-	getline(std::cin, newUser.Username);
+	getline(std::cin, newUser.Username); //saves username entered as newUser.Username
 
-	std::cout << "Choose a role: " << std::endl;
+	std::cout << "Choose a role: " << std::endl; // choose number 1, 2, or 3 to be assigned role to specific username
 	std::cout << "1. Admin " << std::endl;
 	std::cout << "2. Employee " << std::endl;
 	std::cout << "3. Member " << std::endl;
+	// TODO: check for valid input, otherwise bump back to menu and enter appropriate value
 
-	int roleOption;
-	std::cin >> roleOption;
-	std::cin.ignore();
+	int roleOption; 
+	std::cin >> roleOption; // number 1, 2, or 3 stored 
+	std::cin.ignore(); // connected to getline function; grabs the entire line
+	newUser.Role = GetRoleFromIntVal(roleOption - 1); // stores newUser.Role as selected role 
 
-	if (roleOption == 1)
-		newUser.Role = Role::Admin;
-	else if (roleOption == 2)
-		newUser.Role = Role::Employee;
-	else
-		newUser.Role = Role::Member;
+	_users.push_back(newUser); // stores newUser in _users vector
 
-	_users.push_back(newUser);
-
-	std::ofstream oFile("users.txt", std::ios_base::app);
-	oFile << newUser.Username << "|" << GetIntValFromRole(newUser.Role) << std::endl;
-	oFile.close();
+	std::ofstream oFile("users.txt", std::ios_base::app); // opening users.txt file, append newUser data to end of file
+	oFile << newUser.Username << "|" << GetIntValFromRole(newUser.Role) << std::endl; // this is what is printed in txt file; GetIntValFromRole converts role to int
+	oFile.close(); // closes file
 
 }
 
@@ -119,47 +113,45 @@ void Login()
 		std::cout << "1. Log In " << std::endl;
 		std::cout << "2. Create an account " << std::endl;
 		std::cout << "\n";
+		//TODO: check for valid input, otherwise bump back to menu and enter appropriate value
 
 		int option;
-		std::cin >> option;
-		std::cout << "\n";
-		std::cin.ignore();
+		std::cin >> option; // option = 1 or 2
+		std::cout << "\n"; // empty line
+		std::cin.ignore(); // used with getline
 
-		if (option == 2)
+		if (option == 2) // if 2 is selected, make an account
 		{
 			CreateAccount();
 		}
 
-		while (true) // while loop 2
+		while (true) // while loop 2; if 1 is chosen, skips if and goes directly to "Enter username:"
 		{
-			std::cout << "1. Enter username: \n";
-			std::cout << "2. Exit\n";
-			std::cout << "\n";
-			std::cout << "\n";
-			std::string username;
-			getline(std::cin, username);
+			std::cout << "Enter username (or \"Exit\"): ";
+			std::string username; // user input saved as username
+			getline(std::cin, username); // reads/saves entire line
 			std::cout << "\n";
 
-			if (username == "Exit" || username == "exit")
+			if (username == "Exit" || username == "exit") 
 			{
 				break; // breaks out of while loop 2
 			}
 
-			User user;
-			user.Username = username;
+			User user; // class and object OR data type and variable
+			user.Username = username; // data type string
 
-			std::vector<User>::iterator it = find(_users.begin(), _users.end(), user);
+			std::vector<User>::iterator it = find(_users.begin(), _users.end(), user); // searching for username; iterator represents a location within a vector
 
-			if (it != _users.end()) // looking for the username
+			if (it != _users.end()) // checking to see if it found the username
 			{
-				_loggedInUser = _users[it - _users.begin()];
+				_loggedInUser = _users[it - _users.begin()]; // if username is found, sets it equal to _loggedInUser
 				return; // exits void Login function
 			}
 		}
 	}
 }
 
-void DisplayMainMenu()
+void DisplayMainMenu() // menu displayed after logging in
 {
 	std::cout << " [  M A I N    M E N U  ] \n";
 	std::cout << "\n";
@@ -170,7 +162,7 @@ void DisplayMainMenu()
 	std::cout << "2. Check out a book\n";
 	std::cout << "3. Check in a book\n";
 
-	if (_loggedInUser.Role == Role::Employee || _loggedInUser.Role == Role::Admin)
+	if (_loggedInUser.Role == Role::Employee || _loggedInUser.Role == Role::Admin) //_loggedInUser only being used because of checking role
 	{
 		std::cout << "4. Add a book to the library\n"; // the following options will only show if you login as an employee or admin
 		std::cout << "5. Display number of books in the library\n";
@@ -184,14 +176,14 @@ void DisplayMainMenu()
 void AddNewBook() // Case 1
 {
 	std::cout << "Enter Book Title:\n";
-	std::string bookTitle;
-	std::getline(std::cin, bookTitle);
+	std::string bookTitle; 
+	std::getline(std::cin, bookTitle); // user input saved as bookTitle
 
 	std::cout << "Enter Book Author:\n";
 	std::string bookAuthor;
-	std::getline(std::cin, bookAuthor);
+	std::getline(std::cin, bookAuthor); // user input saved as bookAuthor
 
-	Book newBook(bookTitle, bookAuthor); //constructor
+	Book newBook(bookTitle, bookAuthor); //constructor; newBook stores bookTitle and bookAuthor and CheckedOut = False (refer to book.cpp)
 
 	inventory.AddBook(newBook); //sends the whole book to the inventory
 
@@ -200,13 +192,13 @@ void AddNewBook() // Case 1
 
 void ListAllBooks() // Case 2
 {
-	inventory.DisplayAllBooks();
+	inventory.DisplayAllBooks(); // refer to Inventory.cpp DisplayAllBooks function
 }
 
 void CheckInOrOutBook(bool checkOut) // Case 3 & 4
 {
-	std::string inOrOut;
-	if (checkOut)
+	std::string inOrOut; // "in" or "out"
+	if (checkOut) // if bool = true, "out" will be used
 	{
 		inOrOut = "out";
 	}
@@ -217,11 +209,11 @@ void CheckInOrOutBook(bool checkOut) // Case 3 & 4
 
 	std::cout << "Enter a Book Title to Check " + inOrOut + ": ";
 	std::string bookTitle;
-	std::getline(std::cin, bookTitle);
+	std::getline(std::cin, bookTitle); // stores user input as bookTitle
 
-	CheckInOrOutResult result = inventory.CheckInOrOutBook(bookTitle, checkOut);
+	CheckInOrOutResult result = inventory.CheckInOrOutBook(bookTitle, checkOut); //checkOut = true or false
 
-	if (result == CheckInOrOutResult::BookNotFound)
+	if (result == CheckInOrOutResult::BookNotFound) 
 	{
 		std::cout << "Book not found" << std::endl;
 	}
@@ -265,9 +257,9 @@ void RemoveBook() // Case 6
 	std::cout << "You have removed a book from the library." << std::endl;
 }
 
-void DisplayCheckedOutBooks()
+void DisplayCheckedOutBooks() // case 7
 {
-	inventory.DisplayCheckedOutBooks();
+	inventory.DisplayCheckedOutBooks(); // inventory = object
 }
 
 int main()

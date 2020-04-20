@@ -1,7 +1,7 @@
 #pragma once
-enum class CheckInOrOutResult
+enum class CheckInOrOutResult // list of like/similar objects
 {
-	Success,
+	Success, // options to use for book is checked in or out result
 	BookNotFound,
 	AlreadyCheckedIn,
 	AlreadyCheckedOut,

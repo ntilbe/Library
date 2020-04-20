@@ -1,8 +1,2 @@
 ﻿  Library.cpp
-C:\Users\User\source\repos\ntilbe\Library\Library\Library\Library.cpp(44,37): warning C4305: 'argument': truncation from 'int' to 'const _Elem'
-          with
-          [
-              _Elem=char
-          ]
-C:\Users\User\source\repos\ntilbe\Library\Library\Library\Library.cpp(44,32): warning C4309: 'argument': truncation of constant value
   Library.vcxproj -> C:\Users\User\source\repos\ntilbe\Library\Library\x64\Debug\Library.exe
