@@ -12,9 +12,9 @@ public:
 	std::string Username;
 	Role Role;
 
-	bool operator==(const User& user) const
+	bool operator==(const User& user) const // overload == operator, allows comparison of two users
 	{
-		if (Username.compare(user.Username) == 0)
+		if (Username.compare(user.Username) == 0) // looking to see if username 1 is equal to username 2
 			return true;
 		else
 			return false;

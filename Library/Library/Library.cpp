@@ -86,6 +86,8 @@ void CreateAccount()
 	std::cout << "Username: " << std::endl;
 	getline(std::cin, newUser.Username); //saves username entered as newUser.Username
 
+	//TODO: search vector for username, if found send error saying "username already exists"
+
 	std::cout << "Choose a role: " << std::endl; // choose number 1, 2, or 3 to be assigned role to specific username
 	std::cout << "1. Admin " << std::endl;
 	std::cout << "2. Employee " << std::endl;
@@ -207,11 +209,11 @@ void CheckInOrOutBook(bool checkOut) // Case 3 & 4
 		inOrOut = "in";
 	}
 
-	std::cout << "Enter a Book Title to Check " + inOrOut + ": ";
+	std::cout << "Enter a Book Title to Check " + inOrOut + ": "; // uses inOrOut from above if statement to insert in ot out into this cout 
 	std::string bookTitle;
 	std::getline(std::cin, bookTitle); // stores user input as bookTitle
 
-	CheckInOrOutResult result = inventory.CheckInOrOutBook(bookTitle, checkOut); //checkOut = true or false
+	CheckInOrOutResult result = inventory.CheckInOrOutBook(bookTitle, checkOut); //checkOut = true or false; 
 
 	if (result == CheckInOrOutResult::BookNotFound) 
 	{
@@ -234,16 +236,16 @@ void CheckInOrOutBook(bool checkOut) // Case 3 & 4
 
 void DisplayNumBooks() // Case 5
 {
-	int numBooks = inventory.NumberOfBooks();
-	if (numBooks > 0)
+	int numBooks = inventory.NumberOfBooks(); // stores number of books in vector as numBooks
+	if (numBooks > 0) // looking to see if numBooks is greater than 0
 	{
-		std::cout << std::endl;
-		std::cout << "\nThere are " << numBooks << " books in our library.\n";
+		std::cout << std::endl; // new line
+		std::cout << "\nThere are " << numBooks << " books in our library.\n"; // if so, it will print the number found here
 	}
 	else
 	{
-		std::cout << std::endl;
-		std::cout << "\nThere are no books to display.\n";
+		std::cout << std::endl; // new line
+		std::cout << "\nThere are no books to display.\n"; // if there is 0 books or less than 0 books in the vector, it will print this statement
 	}
 }
 

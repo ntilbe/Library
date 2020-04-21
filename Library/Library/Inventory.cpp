@@ -16,22 +16,24 @@ Book Inventory::GetBookByIndex(int index) // Book* Inventory is the pointer that
 
 void Inventory::AddBook(Book book)
 {
-	int nextBookId = 0;
-	if (Books.size() > 0)
-		nextBookId = Books.back().Id + 1;
+	int nextBookId = 0; // needs an intital value
+	if (Books.size() > 0) // checking to see if the size of the vector is greater than 0
+		nextBookId = Books.back().Id; // Books.back function checks ID of the last book in the vector 
 
-	book.Id = nextBookId + 1;
+	book.Id = nextBookId + 1; // sets book.Id equal to nextBookId(last book in vector) and adds 1 to set next book ID
 
-	Inventory::Books.push_back(book);
+	Inventory::Books.push_back(book); // push_back adds book added to last place in the vector
 
-	std::ofstream oFile("books.txt", std::ios_base::app);
-	oFile << book.GetBookFileData() << std::endl;
-	oFile.close();
+	std::ofstream oFile("books.txt", std::ios_base::app); // opens txt file, setting file to append next book
+	oFile << book.GetBookFileData() << std::endl; // writing book data to file using GetBookFileData function (refer to Book.cpp)
+	oFile.close(); // closes file
 }
+// ofstream = writing to file
+// ifstream = reading file
 
 void Inventory::LoadBooks()
 {
-	std::ifstream inFile("books.txt");
+	std::ifstream inFile("books.txt"); //opens file to be read
 
 	std::string bookData[4];
 	// bookData[0] = Id
@@ -40,40 +42,44 @@ void Inventory::LoadBooks()
 	// bookData[3] = checked out
 
 	std::string bookLine;
-	while (getline(inFile, bookLine))
+	while (getline(inFile, bookLine)) // reading file line by line, stores line in bookLine
 	{
-		size_t nextIndex = bookLine.find('|');
-		bookData[0] = bookLine.substr(0, nextIndex);
+		size_t nextIndex = bookLine.find('|'); // finds the first | in line
+		bookData[0] = bookLine.substr(0, nextIndex); // grabs data from index 0 to | and stores it as bookData[0] (this line is the book ID)
 
-		size_t prevIndex = nextIndex;
-		nextIndex = bookLine.find('|', prevIndex + 1);
+		size_t prevIndex = nextIndex; // saves index of first | as prevIndex
+		nextIndex = bookLine.find('|', prevIndex + 1); // starts at prevIndex and finds location of next |
 
-		bookData[1] = bookLine.substr(prevIndex + 1, nextIndex - prevIndex - 1);
-		prevIndex = nextIndex;
-		nextIndex = bookLine.find('|', prevIndex + 1);
+		bookData[1] = bookLine.substr(prevIndex + 1, nextIndex - prevIndex - 1); // finds first | and finds how many characters are between the first and second | (this is the book title)
+		prevIndex = nextIndex; // first | now is equal to second |
+		nextIndex = bookLine.find('|', prevIndex + 1); //  starts at the second | and finds the location of the next | 
 
-		bookData[2] = bookLine.substr(prevIndex + 1, nextIndex - prevIndex - 1);
-		prevIndex = nextIndex;
-		nextIndex = bookLine.find('|', prevIndex + 1);
+		bookData[2] = bookLine.substr(prevIndex + 1, nextIndex - prevIndex - 1); // finds second | and finds how many characters are between the second and third | (this is the book author)
 
-		bookData[3] = bookLine.substr(prevIndex + 1, nextIndex - prevIndex - 1);
+		bookData[3] = bookLine.substr(nextIndex + 1); // grabs data from the third | to the end of that line
 
-		Book loadedBook(bookData[1], bookData[2]);
-		loadedBook.Id = stoi(bookData[0]);
-		loadedBook.CheckInOrOut(stoi(bookData[3]));
+		Book loadedBook(bookData[1], bookData[2]); // creating a new book variable with bookData[1] and [2] (title and author)
+		loadedBook.Id = stoi(bookData[0]); // bookData[0] (which is a book ID) will be stored as loadedBook.Id
+		loadedBook.CheckInOrOut(stoi(bookData[3])); // bookData[3] (which is checked out status) will be stored as loadedBook.CheckInOrOut
+		//CheckInOrOut has bool parameter, file stores bookData[3] as 0 or 1, converts 0 to false and 1 to true
 
-		Books.push_back(loadedBook);
+		Books.push_back(loadedBook); // pushes loadedBook data to last place in the vector
 	}
 }
 
 void Inventory::RemoveBook(std::string title)
 {
 
-	std::vector<Book>::iterator it = std::find(Inventory::Books.begin(), Inventory::Books.end(), Book(title, ""));
+	std::vector<Book>::iterator it = std::find(Inventory::Books.begin(), Inventory::Books.end(), Book(title, "")); // searches vector by book title
 
-	if (it != Inventory::Books.end())
+	if (it != Inventory::Books.end()) // book was found in vector
 	{
-		Inventory::Books.erase(it);
+		Inventory::Books.erase(it); // removes said book from vector
+	}
+	std::ofstream oFile("books.txt"); // don't need the ios_base::app (append) because we want to overwrite this; rewrites txt file which will remove said book
+	for (int i = 0; i < Books.size(); i++) // loops through entire vector
+	{
+		oFile << Books[i].GetBookFileData() << std::endl; //the GetBookFileData seperates the info with pipes ( | ) and will be shown in the txt file with this line
 	}
 }
 
@@ -111,18 +117,19 @@ CheckInOrOutResult Inventory::CheckInOrOutBook(std::string title, bool checkOut)
 		{
 			return CheckInOrOutResult::AlreadyCheckedIn;
 		}
-	}
-	
+	}	
 
-	Books[foundBookIndex].CheckInOrOut(checkOut);
+	Books[foundBookIndex].CheckInOrOut(checkOut); 
+	// getting the book from the index of foundBookIndex and calling CheckInOrOut function
+	// making it to this function means the above "else if" was not equal to eadch other (i.e. true = true, false = false), this will check in if it is checked out or vice versa
 
 	std::ofstream oFile("books.txt"); // don't need the ios_base::app (append) because we want to overwrite this whether it is checked in or out
-	for (int i = 0; i < Books.size(); i++) // loop to find book and to see if it is checked in or out
+	for (int i = 0; i < Books.size(); i++) // loops through entire Book vector
 	{
 		oFile << Books[i].GetBookFileData() << std::endl; //the GetBookFileData seperates the info with pipes ( | ) and will be shown in the txt file with this line
 	}
 
-	return CheckInOrOutResult::Success; 
+	return CheckInOrOutResult::Success; // means book was found and wasn't already set to status currently trying to be set
 }
 
 void Inventory::DisplayAllBooks()
@@ -140,9 +147,9 @@ void Inventory::DisplayCheckedOutBooks()
 	std::cout << "\nID\tTitle\tAuthor" << std::endl;
 	for (int i = 0; i < NumberOfBooks(); i++) // Goes from 0 to the size of the vector (ex. if there are 10 elements in the vector, it will be 10
 	{
-		if (GetBookByIndex(i).IsCheckedOut())
+		if (GetBookByIndex(i).IsCheckedOut()) // finding book by index and whether it is checked out
 		{
-			Books[i].DisplayBook();
+			Books[i].DisplayBook(); // displays book checked out
 		}
 	}
 	std::cout << std::endl;

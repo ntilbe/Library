@@ -10,7 +10,7 @@ Book::Book(std::string title, std::string author) //constructor
 	Book::CheckedOut = false;
 }
 
-void Book::CheckInOrOut(bool checkOut) // setter
+void Book::CheckInOrOut(bool checkOut) // setter; doing this because bool checkedOut is private
 {
 	CheckedOut = checkOut;
 }
@@ -20,7 +20,7 @@ void Book::DisplayBook()
 	std::cout << Id << "\t" << Title << "\t" << Author << std::endl; // cout book ID, Title, and Author, seperated by a tab; the actual book
 }
 
-bool Book::IsCheckedOut()
+bool Book::IsCheckedOut() // getter
 {
 	return CheckedOut;
 }
