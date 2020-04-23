@@ -168,7 +168,7 @@ void DisplayMainMenu() // menu displayed after logging in
 	{
 		std::cout << "4. Add a book to the library\n"; // the following options will only show if you login as an employee or admin
 		std::cout << "5. Display number of books in the library\n";
-		std::cout << "6. Remove a book from the inventory";
+		std::cout << "6. Remove a book from the inventory\n";
 		std::cout << "7. List all checked out books\n";
 	}
 	std::cout << "8. Log Out\n";
@@ -213,9 +213,9 @@ void CheckInOrOutBook(bool checkOut) // Case 3 & 4
 	std::string bookTitle;
 	std::getline(std::cin, bookTitle); // stores user input as bookTitle
 
-	CheckInOrOutResult result = inventory.CheckInOrOutBook(bookTitle, checkOut); //checkOut = true or false; 
+	CheckInOrOutResult result = inventory.CheckInOrOutBook(bookTitle, checkOut); //checkOut = true or false; checking in or out book and give you back checkInOrOutResult (enum class)
 
-	if (result == CheckInOrOutResult::BookNotFound) 
+	if (result == CheckInOrOutResult::BookNotFound) // refer to CheckInOrOutBook function
 	{
 		std::cout << "Book not found" << std::endl;
 	}
@@ -252,9 +252,10 @@ void DisplayNumBooks() // Case 5
 void RemoveBook() // Case 6
 {
 	std::cout << "Enter Book Title:\n";
-	std::string bookTitle;
-	std::getline(std::cin, bookTitle);
-
+	std::string bookTitle; 
+	std::getline(std::cin, bookTitle); //storing user data entered in bookTitle 
+	inventory.RemoveBook(bookTitle); // function removes book from file
+	//See remove book fucntion for TODO
 	std::cout << std::endl;
 	std::cout << "You have removed a book from the library." << std::endl;
 }

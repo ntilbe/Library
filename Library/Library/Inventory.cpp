@@ -69,7 +69,7 @@ void Inventory::LoadBooks()
 
 void Inventory::RemoveBook(std::string title)
 {
-
+	//TODO: switch void to bool and remove cout in library.cpp, use if statement here to return something to library.cpp and cout something
 	std::vector<Book>::iterator it = std::find(Inventory::Books.begin(), Inventory::Books.end(), Book(title, "")); // searches vector by book title
 
 	if (it != Inventory::Books.end()) // book was found in vector

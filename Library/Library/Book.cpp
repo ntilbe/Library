@@ -1,7 +1,11 @@
 #include "Book.h"
 #include <string>
 
-Book::Book(){} //allows you to create a book with no parameters
+Book::Book() //allows you to create a book with no parameters
+{
+	Id = 0;
+	CheckedOut = false;
+} 
 
 Book::Book(std::string title, std::string author) //constructor
 {
@@ -25,7 +29,7 @@ bool Book::IsCheckedOut() // getter
 	return CheckedOut;
 }
 
-std::string Book::GetBookFileData()
+std::string Book::GetBookFileData() // putting book data into preferred format for txt file
 {
 
 	return std::to_string(Id) + " | " + Title + " | " + Author + " | " + (CheckedOut ? "1" : "0");
